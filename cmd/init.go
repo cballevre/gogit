@@ -6,6 +6,8 @@ package cmd
 import (
 	"fmt"
 	"os"
+
+	"gopkg.in/ini.v1"
 	"github.com/spf13/cobra"
 )
 
@@ -52,12 +54,43 @@ var initCmd = &cobra.Command{
 		defer headFile.Close()
 		headFile.WriteString("ref: refs/heads/master\n")
 
-		configFile, _ := os.Create(workTree + "/config")
-		defer configFile.Close()
-		configFile.WriteString("[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = true\n")
+		setupConfig(workTree)
 	},
 }
 
+
+func setupConfig(workTree string) {
+	inidata := ini.Empty()
+	sec, err := inidata.NewSection("core")
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = sec.NewKey("repositoryformatversion", "0")
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = sec.NewKey("filemode", "true")
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = sec.NewKey("bare", "false")
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = sec.NewKey("logallrefupdates", "true")
+	if err != nil {
+		panic(err)
+	}
+
+	err = inidata.SaveTo(workTree + "/config")
+	if err != nil {
+		panic(err)
+	}
+}
 
 
 func getWorkTree(path string) string {
