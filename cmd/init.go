@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"gopkg.in/ini.v1"
 	"github.com/spf13/cobra"
+	"gopkg.in/ini.v1"
 )
 
 // initCmd represents the init command
@@ -41,10 +41,10 @@ var initCmd = &cobra.Command{
 			return
 		}
 
-		os.MkdirAll(workTree + "/branches", 0755)
-		os.MkdirAll(workTree + "/objects", 0755)
-		os.MkdirAll(workTree + "/refs/tags", 0755)
-		os.MkdirAll(workTree + "/refs/heads", 0755)
+		os.MkdirAll(workTree+"/branches", 0755)
+		os.MkdirAll(workTree+"/objects", 0755)
+		os.MkdirAll(workTree+"/refs/tags", 0755)
+		os.MkdirAll(workTree+"/refs/heads", 0755)
 
 		descriptionFile, _ := os.Create(workTree + "/description")
 		defer descriptionFile.Close()
@@ -57,7 +57,6 @@ var initCmd = &cobra.Command{
 		setupConfig(workTree)
 	},
 }
-
 
 func setupConfig(workTree string) {
 	inidata := ini.Empty()
@@ -91,7 +90,6 @@ func setupConfig(workTree string) {
 		panic(err)
 	}
 }
-
 
 func getWorkTree(path string) string {
 	return path + "/.git"
